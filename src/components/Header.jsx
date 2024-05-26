@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { FaHeadphones } from "react-icons/fa6";
-import { FaRegEnvelope } from "react-icons/fa6";
-import { HiMiniBars3BottomLeft } from "react-icons/hi2";
-import { FaHeart } from "react-icons/fa6";
 import { AiFillShopping } from "react-icons/ai";
-import { FaSun } from "react-icons/fa6";
-import { FaMoon } from "react-icons/fa6";
 import { FaWindowClose } from "react-icons/fa";
+import { FaHeart, FaMoon, FaSun } from "react-icons/fa6";
+import { HiMiniBars3BottomLeft } from "react-icons/hi2";
+import { Link, NavLink } from "react-router-dom";
 
-import "../styles/Header.css";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMode } from "../features/auth/authSlice";
-import { store } from "../store";
-import axios from "axios";
 import { clearWishlist, updateWishlist } from "../features/wishlist/wishlistSlice";
+import { store } from "../store";
+import "../styles/Header.css";
 
 const Header = () => {
   const { amount } = useSelector((state) => state.cart);
   const { total } = useSelector((state) => state.cart);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [id, setId] = useState(localStorage.getItem("id"));
+  // const [id, setId] = useState(localStorage.getItem("id"));
   const dispatch = useDispatch();
   const { darkMode } = useSelector((state) => state.auth);
 
@@ -30,7 +26,7 @@ const Header = () => {
   const fetchWishlist = async () => {
     if(loginState){
       try {
-        const getResponse = await axios.get(`http://localhost:8080/user/${localStorage.getItem("id")}`);
+        const getResponse = await axios.get(`http://localhost:8000/user/${localStorage.getItem("id")}`);
         const userObj = getResponse.data;
   
         store.dispatch(updateWishlist({userObj}));
@@ -55,22 +51,6 @@ const Header = () => {
 
   return (
     <>
-      <div className="topbar border-b border-gray-800">
-        <ul>
-          <li>
-            <FaHeadphones className="text-2xl max-sm:text-lg text-accent-content" />
-            <span className="text-2xl max-sm:text-lg text-accent-content">
-              +381 61/123-456
-            </span>
-          </li>
-          <li>
-            <FaRegEnvelope className="text-2xl max-sm:text-lg text-accent-content" />{" "}
-            <span className="text-2xl max-sm:text-lg text-accent-content">
-              support@test.com
-            </span>
-          </li>
-        </ul>
-      </div>
       <div className="navbar bg-base-100 max-w-7xl mx-auto">
         <div className="flex-1">
           <Link
@@ -78,7 +58,8 @@ const Header = () => {
             className="btn btn-ghost normal-case text-2xl font-black text-accent-content"
           >
             <AiFillShopping />
-            Kuzma Clothing & Shoes
+            ServiceHub
+
           </Link>
         </div>
         <div className="flex-none">
@@ -100,18 +81,6 @@ const Header = () => {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </Link>
-          <button
-            className="text-accent-content btn btn-ghost btn-circle text-xl"
-            onClick={() => dispatch(changeMode())}
-          >
-            {darkMode ? <FaSun /> : <FaMoon />}
-          </button>
-          <Link
-            to="/wishlist"
-            className="btn btn-ghost btn-circle text-accent-content"
-          >
-            <FaHeart className="text-xl" />
           </Link>
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
@@ -218,7 +187,12 @@ const Header = () => {
               </li>
               <li className="text-xl">
                 <NavLink className="text-accent-content" to="/shop">
-                  Shop
+                  Hire
+                </NavLink>
+              </li>
+              <li className="text-xl">
+                <NavLink className="text-accent-content" to="/add">
+                 Offer Services
                 </NavLink>
               </li>
               <li className="text-xl">
@@ -252,15 +226,12 @@ const Header = () => {
         <div className="container text-2xl navlinks-container">
           <NavLink className="text-accent-content" to="/">
             Home
-          </NavLink>
+          </NavLink> 
           <NavLink className="text-accent-content" to="/shop">
-            Shop
+            Hire
           </NavLink>
-          <NavLink className="text-accent-content" to="/about-us">
-            About us
-          </NavLink>
-          <NavLink className="text-accent-content" to="/contact">
-            Contact
+          <NavLink className="text-accent-content" to="/add">
+            Offer Services
           </NavLink>
           {!isLoggedIn && (
             <>
@@ -272,6 +243,9 @@ const Header = () => {
               </NavLink>
             </>
           )}
+           <NavLink className="text-accent-content" to="/about-us">
+            About us
+          </NavLink>
         </div>
       </div>
     </>

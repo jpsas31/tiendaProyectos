@@ -1,31 +1,27 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { FaCartShopping, FaHeart } from "react-icons/fa6";
 import {
   QuantityInput,
-  SectionTitle,
-  SelectSize,
   SingleProductRating,
-  SingleProductReviews,
+  SingleProductReviews
 } from "../components";
-import { FaHeart } from "react-icons/fa6";
-import { FaCartShopping } from "react-icons/fa6";
 
-import { Link, useLoaderData } from "react-router-dom";
 import parse from "html-react-parser";
-import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
+import { useLoaderData } from "react-router-dom";
+import { toast } from "react-toastify";
 import { addToCart } from "../features/cart/cartSlice";
 import {
-  updateWishlist,
   removeFromWishlist,
+  updateWishlist,
 } from "../features/wishlist/wishlistSlice";
-import { toast } from "react-toastify";
 import { store } from "../store";
 
 export const singleProductLoader = async ({ params }) => {
   const { id } = params;
 
-  const response = await axios(`http://localhost:8080/products/${id}`);
+  const response = await axios(`http://localhost:8000/products/${id}`);
 
   return { productData: response.data };
 };
@@ -56,7 +52,6 @@ const SingleProduct = () => {
     price: productData?.price?.current?.value,
     brandName: productData?.brandName,
     amount: quantity,
-    selectedSize: size || productData?.availableSizes[0],
     isInWishList:
       wishItems.find((item) => item.id === productData?.id + size) !==
       undefined,
@@ -69,7 +64,7 @@ const SingleProduct = () => {
   const addToWishlistHandler = async (product) => {
     try {
       const getResponse = await axios.get(
-        `http://localhost:8080/user/${localStorage.getItem("id")}`
+        `http://localhost:8000/user/${localStorage.getItem("id")}`
       );
       const userObj = getResponse.data;
 
@@ -79,7 +74,7 @@ const SingleProduct = () => {
       userObj.userWishlist.push(product);
 
       const postResponse = await axios.put(
-        `http://localhost:8080/user/${localStorage.getItem("id")}`,
+        `http://localhost:8000/user/${localStorage.getItem("id")}`,
         userObj
       );
 
@@ -93,7 +88,7 @@ const SingleProduct = () => {
 
   const removeFromWishlistHandler = async (product) => {
     const getResponse = await axios.get(
-      `http://localhost:8080/user/${localStorage.getItem("id")}`
+      `http://localhost:8000/user/${localStorage.getItem("id")}`
     );
     const userObj = getResponse.data;
 
@@ -106,7 +101,7 @@ const SingleProduct = () => {
     userObj.userWishlist = newWishlist;
 
     const postResponse = await axios.put(
-      `http://localhost:8080/user/${localStorage.getItem("id")}`,
+      `http://localhost:8000/user/${localStorage.getItem("id")}`,
       userObj
     );
 
@@ -117,25 +112,13 @@ const SingleProduct = () => {
 
   return (
     <>
-      <SectionTitle title="Product page" path="Home | Shop | Product page" />
       <div className="grid grid-cols-2 max-w-7xl mx-auto mt-5 max-lg:grid-cols-1 max-lg:mx-5">
         <div className="product-images flex flex-col justify-center max-lg:justify-start">
           <img
-            src={`https://${productData?.additionalImageUrls[currentImage]}`}
+            src={`${productData?.additionalImageUrls[currentImage]}`}
             className="w-96 text-center border border-gray-600 cursor-pointer"
             alt={productData.name}
           />
-          <div className="other-product-images mt-1 grid grid-cols-3 w-96 gap-y-1 gap-x-2 max-sm:grid-cols-2 max-sm:w-64">
-            {productData?.additionalImageUrls.map((imageObj, index) => (
-              <img
-                src={`https://${imageObj}`}
-                key={nanoid()}
-                onClick={() => setCurrentImage(index)}
-                alt={productData.name}
-                className="w-32 border border-gray-600 cursor-pointer"
-              />
-            ))}
-          </div>
         </div>
         <div className="single-product-content flex flex-col gap-y-5 max-lg:mt-2">
           <h2 className="text-5xl max-sm:text-3xl text-accent-content">
@@ -148,13 +131,7 @@ const SingleProduct = () => {
           <div className="text-xl max-sm:text-lg text-accent-content">
             {parse(productData?.description)}
           </div>
-          <div className="text-2xl">
-            <SelectSize
-              sizeList={productData?.availableSizes}
-              size={size}
-              setSize={setSize}
-            />
-          </div>
+
           <div>
             <label htmlFor="Quantity" className="sr-only">
               {" "}

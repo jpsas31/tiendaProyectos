@@ -1,5 +1,5 @@
-import { nanoid } from "nanoid";
 import parse from "html-react-parser";
+import { nanoid } from "nanoid";
 import React, { memo } from "react";
 
 const SingleProductRating = ({rating, productData}) => {

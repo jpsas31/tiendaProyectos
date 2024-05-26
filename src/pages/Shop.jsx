@@ -53,7 +53,7 @@ export const shopLoader = async ({ request }) => {
 
   try {
     const response = await axios(
-      `http://localhost:8080/products${parameter}`
+      `http://localhost:8000/products${parameter}`
 
     );
     let data = response.data;
@@ -79,7 +79,7 @@ const Shop = () => {
 
   return (
     <>
-      <SectionTitle title="Shop" path="Home | Shop" />
+      <SectionTitle title="Services"/>
       <div className="max-w-7xl mx-auto mt-5">
         <Filters />
         {productLoaderData.productsData.length === 0 && <h2 className="text-accent-content text-center text-4xl my-10">No products found for this filter</h2>}

@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import {
   About,
   Cart,
@@ -6,19 +7,19 @@ import {
   HomeLayout,
   Landing,
   Login,
+  OrderHistory,
+  AddProduct,
+  Profile,
   Register,
+  Search,
   Shop,
   SingleProduct,
-  Wishlist,
-  Profile,
-  Search,
   ThankYou,
-  OrderHistory
+  Wishlist
 } from "./pages";
 import { landingLoader } from "./pages/Landing";
-import { singleProductLoader } from "./pages/SingleProduct";
 import { shopLoader } from "./pages/Shop";
-import { ToastContainer } from "react-toastify";
+import { singleProductLoader } from "./pages/SingleProduct";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path:"order-history",
         element: <OrderHistory />
+      },
+      {
+        path:"add",
+        element: <AddProduct/>
       }
     ],
   },

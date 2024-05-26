@@ -16,7 +16,7 @@ const ThankYou = () => {
 
   const saveToOrderHistory = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/orders", {
+      const response = await axios.post("http://localhost:8000/orders", {
         userId: localStorage.getItem("id"),
         orderStatus: "in progress",
         subtotal: total,
@@ -44,14 +44,13 @@ const ThankYou = () => {
 
   return (
     <>
-      <SectionTitle title="Thank You" path="Home | Cart | Thank you" />
       <div className="thankyou-content text-center text-accent-content px-10 max-w-7xl mx-auto">
         <h2 className="text-6xl max-sm:text-4xl">
-          Thank you for your purchase!
+          Thank you for hiring our services!
         </h2>
 
         <h3 className="text-2xl mt-10 max-sm:text-xl">
-          We hope you love your new clothes and shoes! We appreciate your
+          We hope you love the results! We appreciate your
           business and look forward to seeing you again soon.
         </h3>
         <h3 className="text-2xl mt-5 max-sm:text-xl">
@@ -68,13 +67,6 @@ const ThankYou = () => {
             &rarr; Follow us on social media &larr;
           </li>
         </ul>
-
-        <h4 className="text-xl mt-5 max-sm:text-lg">
-          Thank you again for your purchase!
-        </h4>
-        <h4 className="text-xl max-sm:text-lg">
-          Sincerely, The Kuzma Clothing & Shoes team
-        </h4>
       </div>
     </>
   );
